@@ -113,7 +113,7 @@ function MainComponent() {
           </div>
         </div>
         <div>
-          <label className="text-base font-medium">相手との距離感</label>
+          <label className="text-base font-medium">相手との関係性</label>
           <div className="flex items-center space-x-2 mt-2">
             <span>フォーマル</span>
             <input
