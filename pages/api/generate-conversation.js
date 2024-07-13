@@ -1,0 +1,53 @@
+import OpenAI from 'openai';
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+export default async function handler(req, res) {
+  if (req.method === 'POST') {
+    try {
+      const { position, ageGroup, proximity, date } = req.body;
+
+      // 距離感を言葉で表現
+      const proximityText = proximity < 33 ? "フォーマル" : proximity > 66 ? "カジュアル" : "普通";
+
+      const prompt = `
+        あなたは、気まずい会議の冒頭で使える会話スターターを生成する専門家です。
+        以下の条件に基づいて、適切な会話スターターを生成してください：
+
+        - 相手の立場: ${position}（目上の方、同僚、後輩 のいずれか）
+        - 相手の年代: ${ageGroup}
+        - 相手との親しさ: ${proximityText}
+
+        #制約条件
+        会話スターターは以下の構成にしてください：
+        1. 状況に応じた適切な挨拶
+        2. 相手の年代に合わせた話題の導入
+        3. 会話を促す質問
+
+        回答は、それぞれのパートを改行で区切ってください。
+        必ず、冒頭にリスト番号を付与してください。
+        フレンドリーで自然な口調を心がけ、場の雰囲気を和らげるような内容にしてください。
+        
+        - 相手との親しさが高いほど、カジュアルな口語体で敬語は使わないでください。
+        - 相手の年代の情報は、文中には直接的に言及しないでください。
+        - 仕事の話は極力避けて、雑談としてください。
+        - 今時点の季節も考慮し、季節感のある話題も極力入れてください。今日は${new Date(date).toLocaleDateString('ja-JP')}です。
+      `;
+
+      const completion = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: prompt }],
+      });
+
+      const conversationStarter = completion.choices[0].message.content.trim();
+      res.status(200).json({ conversationStarter });
+    } catch (error) {
+      console.error('Error calling OpenAI API:', error);
+      res.status(500).json({ error: 'Failed to generate conversation starter' });
+    }
+  } else {
+    res.status(405).json({ error: 'Method not allowed' });
+  }
+}
