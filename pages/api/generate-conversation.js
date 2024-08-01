@@ -30,10 +30,13 @@ export default async function handler(req, res) {
         必ず、冒頭にリスト番号を付与してください。
         フレンドリーで自然な口調を心がけ、場の雰囲気を和らげるような内容にしてください。
         
+        2. の回答については、箇条書きで候補を5個は列挙してください。
         - 相手との親しさが高いほど、カジュアルな口語体で敬語は使わないでください。
         - 相手の年代の情報は、文中には直接的に言及しないでください。
         - 仕事の話は極力避けて、雑談としてください。
-        - 今時点の季節も考慮し、季節感のある話題も極力入れてください。今日は${new Date(date).toLocaleDateString('ja-JP')}です。
+        - 今日は${new Date(date).toLocaleDateString('ja-JP')}です。
+        - 最近のニュースや時候の話題も時々、織り交ぜてください。
+        - 春夏秋冬の季節の話題は、ランダムに5%の確率でのみ入れてください。
       `;
 
       const completion = await openai.chat.completions.create({
