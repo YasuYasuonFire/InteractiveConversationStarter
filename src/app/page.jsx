@@ -2,12 +2,21 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 function MainComponent() {
+  const [situation, setSituation] = useState("");
   const [position, setPosition] = useState("");
   const [ageGroup, setAgeGroup] = useState("");
   const [proximity, setProximity] = useState(50);
   const [conversation, setConversation] = useState("");
   const [loading, setLoading] = useState(false);
   const [activeButton, setActiveButton] = useState({ type: "", value: "" });
+
+  const situations = [
+    { value: "meeting", label: "会議前" },
+    { value: "elevator", label: "エレベーター" },
+    { value: "break_room", label: "休憩室" },
+    { value: "party", label: "飲み会" },
+    { value: "encounter", label: "偶然遭遇" },
+  ];
 
   const positions = [
     { value: "junior", label: "後輩" },
@@ -25,7 +34,9 @@ function MainComponent() {
   useEffect(() => {
     if (activeButton.type && activeButton.value) {
       const timer = setTimeout(() => {
-        if (activeButton.type === "position") {
+        if (activeButton.type === "situation") {
+          setSituation(activeButton.value);
+        } else if (activeButton.type === "position") {
           setPosition(activeButton.value);
         } else if (activeButton.type === "age") {
           setAgeGroup(activeButton.value);
@@ -48,7 +59,7 @@ function MainComponent() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ position, ageGroup, proximity, date: new Date().toISOString() }),
+        body: JSON.stringify({ situation, position, ageGroup, proximity, date: new Date().toISOString() }),
       });
       const data = await response.json();
       setConversation(data.conversationStarter);
@@ -72,6 +83,26 @@ function MainComponent() {
         スピーディー気まずさ解消！🤖💬
       </h2>
       <div className="space-y-6">
+        <div>
+          <label className="text-base font-medium">シチュエーション</label>
+          <div className="grid grid-cols-2 gap-2 mt-2">
+            {situations.map((sit) => (
+              <button
+                key={sit.value}
+                onClick={() => handleButtonClick("situation", sit.value)}
+                className={`py-2 px-4 rounded transition-colors duration-150 text-sm ${
+                  (activeButton.type === "situation" &&
+                    activeButton.value === sit.value) ||
+                  situation === sit.value
+                    ? "bg-[#8B5CF6] text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
+              >
+                {sit.label}
+              </button>
+            ))}
+          </div>
+        </div>
         <div>
           <label className="text-base font-medium">相手の立場</label>
           <div className="flex justify-between mt-2">
@@ -137,11 +168,11 @@ function MainComponent() {
         <button
           onClick={generateConversation}
           className={`w-full py-2 px-4 rounded font-medium text-white transition-colors duration-200 ${
-            loading || !position || !ageGroup
+            loading || !situation || !position || !ageGroup
               ? "bg-gray-400 cursor-not-allowed"
               : "bg-[#8B5CF6] hover:bg-[#7C3AED]"
           }`}
-          disabled={loading || !position || !ageGroup}
+          disabled={loading || !situation || !position || !ageGroup}
         >
           {loading ? (
             <>
