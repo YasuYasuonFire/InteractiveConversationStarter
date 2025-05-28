@@ -78,118 +78,177 @@ function MainComponent() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto bg-white shadow-lg rounded-lg p-6">
-      <h2 className="text-2xl font-bold text-center mb-6">
-        スピーディー気まずさ解消！🤖💬
-      </h2>
-      <div className="space-y-6">
-        <div>
-          <label className="text-base font-medium">シチュエーション</label>
-          <div className="grid grid-cols-2 gap-2 mt-2">
-            {situations.map((sit) => (
-              <button
-                key={sit.value}
-                onClick={() => handleButtonClick("situation", sit.value)}
-                className={`py-2 px-4 rounded transition-colors duration-150 text-sm ${
-                  (activeButton.type === "situation" &&
-                    activeButton.value === sit.value) ||
-                  situation === sit.value
-                    ? "bg-[#8B5CF6] text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                }`}
-              >
-                {sit.label}
-              </button>
-            ))}
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-50 to-indigo-100 py-8 px-4">
+      <div className="w-full max-w-lg mx-auto">
+        <div className="bg-white/80 backdrop-blur-sm shadow-2xl rounded-3xl p-8 border border-white/20">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mb-4 shadow-lg">
+              <span className="text-2xl">🤖</span>
+            </div>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
+              スピーディー気まずさ解消！
+            </h1>
+            <p className="text-gray-600 text-sm">会話のきっかけを見つけよう💬</p>
           </div>
-        </div>
-        <div>
-          <label className="text-base font-medium">相手の立場</label>
-          <div className="flex justify-between mt-2">
-            {positions.map((pos) => (
-              <button
-                key={pos.value}
-                onClick={() => handleButtonClick("position", pos.value)}
-                className={`flex-1 mx-1 py-2 px-4 rounded transition-colors duration-150 ${
-                  (activeButton.type === "position" &&
-                    activeButton.value === pos.value) ||
-                  position === pos.value
-                    ? "bg-[#8B5CF6] text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                }`}
-              >
-                {pos.label}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div>
-          <label className="text-base font-medium">相手の年代</label>
-          <div className="flex justify-between mt-2">
-            {ageGroups.map((age) => (
-              <button
-                key={age.value}
-                onClick={() => handleButtonClick("age", age.value)}
-                className={`flex-1 mx-1 py-2 px-4 rounded transition-colors duration-150 ${
-                  (activeButton.type === "age" &&
-                    activeButton.value === age.value) ||
-                  ageGroup === age.value
-                    ? "bg-[#8B5CF6] text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                }`}
-              >
-                {age.label}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div>
-          <label className="text-base font-medium">相手との関係性</label>
-          <div className="flex items-center space-x-2 mt-2">
-            <span>フォーマル</span>
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={proximity}
-              onChange={(e) => setProximity(Number(e.target.value))}
-              className="flex-grow h-2 rounded-lg appearance-none cursor-pointer"
-              style={{
-                background: `linear-gradient(to right, ${getProximityColor(
-                  proximity
-                )} 0%, ${getProximityColor(
-                  proximity
-                )} ${proximity}%, #E5E7EB ${proximity}%, #E5E7EB 100%)`,
-              }}
-            />
-            <span>カジュアル</span>
-          </div>
-        </div>
-        <button
-          onClick={generateConversation}
-          className={`w-full py-2 px-4 rounded font-medium text-white transition-colors duration-200 ${
-            loading || !situation || !position || !ageGroup
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-[#8B5CF6] hover:bg-[#7C3AED]"
-          }`}
-          disabled={loading || !situation || !position || !ageGroup}
-        >
-          {loading ? (
-            <>
-              生成中 <i className="fas fa-spinner fa-spin ml-2"></i>
-            </>
-          ) : (
-            <>
-              会話スターターを生成 <i className="fas fa-sync-alt ml-2"></i>
-            </>
-          )}
-        </button>
 
-        {conversation && (
-          <div className="mt-4 bg-blue-50 p-4 rounded-lg">
-            <p className="whitespace-pre-wrap">{conversation}</p>
+          <div className="space-y-8">
+            <div className="space-y-3">
+              <label className="text-lg font-semibold text-gray-800 flex items-center">
+                <span className="mr-2">📍</span>シチュエーション
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                {situations.map((sit) => (
+                  <button
+                    key={sit.value}
+                    onClick={() => handleButtonClick("situation", sit.value)}
+                    className={`group relative py-3 px-4 rounded-xl transition-all duration-300 text-sm font-medium transform hover:scale-105 ${
+                      (activeButton.type === "situation" &&
+                        activeButton.value === sit.value) ||
+                      situation === sit.value
+                        ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-200"
+                        : "bg-white text-gray-700 hover:bg-gray-50 shadow-md hover:shadow-lg border border-gray-200"
+                    }`}
+                  >
+                    <span className="relative z-10">{sit.label}</span>
+                    {((activeButton.type === "situation" && activeButton.value === sit.value) || situation === sit.value) && (
+                      <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl opacity-20 animate-pulse"></div>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <label className="text-lg font-semibold text-gray-800 flex items-center">
+                <span className="mr-2">👥</span>相手の立場
+              </label>
+              <div className="flex gap-2">
+                {positions.map((pos) => (
+                  <button
+                    key={pos.value}
+                    onClick={() => handleButtonClick("position", pos.value)}
+                    className={`flex-1 py-3 px-4 rounded-xl transition-all duration-300 font-medium transform hover:scale-105 ${
+                      (activeButton.type === "position" &&
+                        activeButton.value === pos.value) ||
+                      position === pos.value
+                        ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg shadow-indigo-200"
+                        : "bg-white text-gray-700 hover:bg-gray-50 shadow-md hover:shadow-lg border border-gray-200"
+                    }`}
+                  >
+                    {pos.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <label className="text-lg font-semibold text-gray-800 flex items-center">
+                <span className="mr-2">🎂</span>相手の年代
+              </label>
+              <div className="grid grid-cols-4 gap-2">
+                {ageGroups.map((age) => (
+                  <button
+                    key={age.value}
+                    onClick={() => handleButtonClick("age", age.value)}
+                    className={`py-3 px-3 rounded-xl transition-all duration-300 font-medium text-sm transform hover:scale-105 ${
+                      (activeButton.type === "age" &&
+                        activeButton.value === age.value) ||
+                      ageGroup === age.value
+                        ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-200"
+                        : "bg-white text-gray-700 hover:bg-gray-50 shadow-md hover:shadow-lg border border-gray-200"
+                    }`}
+                  >
+                    {age.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <label className="text-lg font-semibold text-gray-800 flex items-center">
+                <span className="mr-2">🤝</span>相手との関係性
+              </label>
+              <div className="bg-white rounded-xl p-4 shadow-md border border-gray-200">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-sm font-medium text-blue-600">フォーマル</span>
+                  <div className="text-center">
+                    <div className="text-xs text-gray-500 mb-1">関係性レベル</div>
+                    <div className="bg-gradient-to-r from-blue-500 to-amber-500 bg-clip-text text-transparent font-bold text-lg">
+                      {proximity}%
+                    </div>
+                  </div>
+                  <span className="text-sm font-medium text-amber-600">カジュアル</span>
+                </div>
+                <div className="relative">
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={proximity}
+                    onChange={(e) => setProximity(Number(e.target.value))}
+                    className="w-full h-3 rounded-lg appearance-none cursor-pointer slider"
+                    style={{
+                      background: `linear-gradient(to right, ${getProximityColor(
+                        proximity
+                      )} 0%, ${getProximityColor(
+                        proximity
+                      )} ${proximity}%, #E5E7EB ${proximity}%, #E5E7EB 100%)`,
+                    }}
+                  />
+                  <div className="flex justify-between text-xs text-gray-400 mt-1">
+                    <span>0</span>
+                    <span>25</span>
+                    <span>50</span>
+                    <span>75</span>
+                    <span>100</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={generateConversation}
+              className={`group relative w-full py-4 px-6 rounded-2xl font-bold text-white text-lg transition-all duration-300 transform hover:scale-105 ${
+                loading || !situation || !position || !ageGroup
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg hover:shadow-xl shadow-purple-200"
+              }`}
+              disabled={loading || !situation || !position || !ageGroup}
+            >
+              <div className="flex items-center justify-center">
+                {loading ? (
+                  <>
+                    <div className="mr-3 w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    生成中...
+                  </>
+                ) : (
+                  <>
+                    <span className="mr-2">✨</span>
+                    会話スターターを生成
+                    <span className="ml-2 transform group-hover:translate-x-1 transition-transform duration-200">🚀</span>
+                  </>
+                )}
+              </div>
+              {!loading && !(!situation || !position || !ageGroup) && (
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+              )}
+            </button>
+
+            {conversation && (
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-2xl border border-blue-100 shadow-lg transform animate-fadeIn">
+                <div className="flex items-center mb-3">
+                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-white text-sm">💡</span>
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-800">会話スターター</h3>
+                </div>
+                <div className="bg-white rounded-xl p-4 shadow-sm border border-blue-100">
+                  <p className="whitespace-pre-wrap text-gray-700 leading-relaxed">{conversation}</p>
+                </div>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
