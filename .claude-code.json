@@ -1,0 +1,16 @@
+{
+  "projectName": "InteractiveConversationStarter",
+  "description": "Interactive Conversation Starter with Claude",
+  "include": [
+    "src/**/*",
+    "pages/**/*",
+    "*.js",
+    "*.json",
+    "*.md"
+  ],
+  "exclude": [
+    "node_modules/**/*",
+    ".next/**/*",
+    "*.log"
+  ]
+} 
