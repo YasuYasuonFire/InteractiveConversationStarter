@@ -22,7 +22,35 @@ export default async function handler(req, res) {
       };
       const situationText = situationMap[situation] || "一般的な場面";
 
-      const prompt = `
+      // 社長との会話の場合は特別なプロンプトを使用
+      const isPresident = position === 'president';
+      
+      const prompt = isPresident ? `
+あなたは自然な会話の専門家です。社長との会話で実際に使える、適切で自然な一言を生成してください。
+
+状況:
+- 場面: ${situationText}
+- 相手: 社長（${ageGroup}）
+- 関係性: ${proximityText}
+- 日付: ${new Date(date).toLocaleDateString('ja-JP')}
+
+要求:
+社長との会話にふさわしい、実際にその場で言えるような自然な一言を3つ生成してください。
+
+制約:
+- 丁寧語・尊敬語を適切に使用
+- 簡潔で品格のある口調（1文か2文程度）
+- その場の空気を和らげつつ、適度な距離感を保つ
+- 業務の話は避け、当たり障りのない話題で
+- 番号や説明文は不要、会話文のみ
+- 各候補は改行で区切る
+- 社長に対して失礼にならない内容
+
+例:
+おはようございます。今日も良いお天気ですね。
+お疲れ様でございます。お忙しい中恐れ入ります。
+失礼いたします。エレベーターお先にどうぞ。
+      ` : `
 あなたは自然な会話の専門家です。実際の職場でそのまま使える、自然で気軽な一言を生成してください。
 
 状況:
