@@ -22,6 +22,7 @@ function MainComponent() {
     { value: "junior", label: "後輩" },
     { value: "peer", label: "同僚" },
     { value: "superior", label: "目上" },
+    { value: "president", label: "社長" },
   ];
 
   const ageGroups = [
@@ -122,12 +123,12 @@ function MainComponent() {
               <label className="text-lg font-semibold text-gray-800 flex items-center">
                 <span className="mr-2">👥</span>相手の立場
               </label>
-              <div className="flex gap-2">
+              <div className="grid grid-cols-2 gap-2">
                 {positions.map((pos) => (
                   <button
                     key={pos.value}
                     onClick={() => handleButtonClick("position", pos.value)}
-                    className={`flex-1 py-3 px-4 rounded-xl transition-all duration-300 font-medium transform hover:scale-105 ${
+                    className={`py-3 px-4 rounded-xl transition-all duration-300 font-medium transform hover:scale-105 ${
                       (activeButton.type === "position" &&
                         activeButton.value === pos.value) ||
                       position === pos.value
